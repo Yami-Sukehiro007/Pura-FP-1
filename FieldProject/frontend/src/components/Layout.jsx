@@ -1,116 +1,91 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import '../App.css';
+import './Layout.css'; // Custom CSS file
+
+const Sidebar = ({ handleLogout, user, toggleTheme }) => {
+  return (
+    <div className={`d-flex flex-column sidebar ${user.isDarkMode ? '' : 'light'}`}>
+      <div className="toggle-theme">
+        <label className="switch">
+          <input type="checkbox" checked={user.isDarkMode} onChange={toggleTheme} />
+          <span className="slider round"></span>
+        </label>
+      </div>
+      <div className="text-center mb-4">
+        <img src="https://i.imgur.com/bqAB7QJ.png" alt="Logo" style={{ width: '50px', height: '50px', background: 'white', borderRadius: '15px', marginRight: '1em' }} />
+        <span className="h3">MentorConnect</span>
+      </div>
+      <ul className="nav flex-column">
+        <li className="nav-item">
+          <Link to="/attendance" className="nav-link">
+            <i className="bi bi-calendar-check"></i>
+            Attendance
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/approvals" className="nav-link">
+            <i className="bi bi-check2-circle"></i>
+            Approvals
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/schedule-meetings" className="nav-link">
+            <i className="bi bi-calendar2-plus"></i>
+            Schedule Meetings
+          </Link>
+        </li>
+      </ul>
+      <div className="profile-section">
+        <img src="https://i.imgur.com/ov44WOb.png" alt="Profile" width="50px" height="40px" />
+        <div className="profile-info">
+          <div className="name">Vatte Vijaya Bhaskara Reddy</div>
+          <div className="email">vatte@gmail.com</div>
+        </div>
+        <button className="logout-btn" onClick={handleLogout}>
+          <i className="bi bi-box-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const Layout = ({ children }) => {
   const { userRole, name, logout } = useAuth();
   const navigate = useNavigate();
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
-
-
+  const user = {
+    isDarkMode: isDarkMode,
+    name: 'Nina Ergemia',
+    email: 'nina_erg@ergemia.com'
+  };
 
   return (
-    
-    <div className="d-flex flex-column min-vh-100">
-      {/* App Bar */}
-      <>
-  <meta charSet="UTF-8" />
-  <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  {/*--======== CSS ======== */}
-  <link rel="stylesheet" href="layout.css" />
-  {/*--===== Boxicons CSS ===== */}
-  <link
-    href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
-    rel="stylesheet"
-  />
-  <nav className="sidebar close">
-    <header>
-      <div className="image-text">
-        <span className="image">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAZxJREFUSEu11L1vjWEYx/HPSecmmgpCajHUaOofIF5K01EbU/8CidCkpoYNIQzduyojUukLo9UmBgtB21RIGQnPldxtTh7nPveTU+da7/v6fa/3lj5bq8/6mgImq0Bu4kQK6D3m8bwUYBPAHG5nhGZxvxukBDiPF9hAgFaS2DncwRGcwXoOUgKsJoFpPK6JTGEJy7jYK+AbDlRlGMTPmsgwtvEZx3oFbOIQDuJrBhB/olQdrVSiqPlZRDmeZEoUPbrQK6C9yTEx0ZOBBL2Lw/ttcgR2DSEWwu32u+pLQB/uZ0x3fUdxHTGev/Ayzf+7/7FoJY2u792aHOMZUY/hVJqmdrEtvMHrlM2PTqQcIKZiMTWxSQaxCzNYq3/uBJjAs/TxKW4hjtv3mnNkGMcv3sMnLAKLsd2zOmAIb1PkcWtuNAkf91I5v+BkNXk7u351wFU8wCucbige30InljIO35Vq8xdygDhol0rLkwGPp8P3CJdzgA8YQZSqXvNSQkfxCR9xPAf4kx5KNyoH+8e/V6FSNtkpauzY9GPfM/gL5dBHGcZ57nQAAAAASUVORK5CYII=" />
-        </span>
-        <div className="text logo-text">
-          <span className="name">MentorConnect</span>
-        </div>
-      </div>
-      <i className="bx bx-chevron-right toggle" />
-    </header>
-    <div className="menu-bar">
-      <div className="menu">
-        <li className="search-box">
-          <i className="bx bx-search icon" />
-          <input type="text" placeholder="Search..." />
-        </li>
-        <ul className="menu-links">
-          <li className="nav-link">
-            <a href="#">
-              <i className="bx bx-bar-chart-alt-2 icon" />
-              <span className="text nav-text">Attendance</span>
-            </a>
-          </li>
-          <li className="nav-link">
-            <a href="#">
-              <i className="bx bx-heart icon" />
-              <span className="text nav-text">Approvals</span>
-            </a>
-          </li>
-          <li className="nav-link">
-            <a href="#">
-              <i className="bx bx-pie-chart-alt icon" />
-              <span className="text nav-text">Schedule Meeting</span>
-            </a>
-          </li>
-          <div className="bottom-content">
-            <li className="">
-              <a href="#">
-                <i className="bx bx-log-out icon" />
-                <span className="text nav-text">Logout</span>
-              </a>
-            </li>
-            <li className="mode">
-              <div className="sun-moon">
-                <i className="bx bx-moon icon moon" />
-                <i className="bx bx-sun icon sun" />
-              </div>
-              <span className="mode-text text">Dark mode</span>
-              <div className="toggle-switch">
-                <span className="switch" />
-              </div>
-            </li>
-          </div>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <section className="home">
-    <div className="text">Welcome 23CSE027 - Vatte Vijaya Bhaskara Reddy</div>
-  </section>
-  {}
-</>
-
-
-      {/* Sidebar */}
-      <div className="d-flex flex-grow-1">
-        
-
+    <div className="d-flex">
+      <Sidebar handleLogout={handleLogout} user={user} toggleTheme={toggleTheme} />
+      <div className="d-flex flex-column flex-grow-1 min-vh-100" style={{ marginLeft: '300px' }}>
         {/* Main Content */}
         <main className="flex-grow-1 p-3" style={{ overflow: 'auto', marginTop: '56px' }}>
           {children}
         </main>
+
+        {/* Footer */}
+        <footer className="bg-light text-center py-3">
+          &copy; MentorConnect
+        </footer>
       </div>
-
-      {/* Footer */}
-
     </div>
   );
 };

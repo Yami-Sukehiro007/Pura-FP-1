@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Card, CardContent, Typography, CircularProgress } from '@mui/material';
+import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import MiniLayout from '../components/MiniLayout';
 import { fetchMentorById } from '../api'; // Import the API function
@@ -35,8 +35,8 @@ const MentorDashboard = () => {
   if (loading) {
     return (
       <MiniLayout>
-        <Container>
-          <CircularProgress />
+        <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+          <Spinner animation="border" />
         </Container>
       </MiniLayout>
     );
@@ -45,10 +45,8 @@ const MentorDashboard = () => {
   if (!mentor) {
     return (
       <MiniLayout>
-        <Container>
-          <Typography variant="h5" component="div">
-            Mentor not found.
-          </Typography>
+        <Container className="text-center mt-5">
+          <h5>Mentor not found.</h5>
         </Container>
       </MiniLayout>
     );
@@ -56,43 +54,35 @@ const MentorDashboard = () => {
 
   return (
     <MiniLayout>
-      <Container>
-        <Card>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              Welcome! {mentor.name}
-            </Typography>
-            <Typography variant="body1" component="div">
-              Registration Number: {mentor.registrationNumber} 
-            </Typography>
-            <Typography variant="body1" component="div">
-              Year: {mentor.year}
-            </Typography>
-            <Typography variant="body1" component="div">
-              Email: {mentor.email}
-            </Typography>
-            <Typography variant="body1" component="div">
-              Role: {mentor.role}
-            </Typography>
+      <Container className="my-3">
+        <Card className="shadow mb-3">
+          <Card.Body>
+            <h5>Welcome! {mentor.name}</h5>
+            <p>Registration Number: {mentor.registrationNumber}</p>
+            <p>Year: {mentor.year}</p>
+            <p>Email: {mentor.email}</p>
+            <p>Role: {mentor.role}</p>
             {mentor.photoLink && (
-              <img src={mentor.photoLink} alt={mentor.name} style={{ width: '100%', height: 'auto', marginTop: '1rem' }} />
+              <img
+                src={mentor.photoLink}
+                alt={mentor.name}
+                className="img-fluid mt-3"
+              />
             )}
-          </CardContent>
+          </Card.Body>
         </Card>
 
-        <Grid container spacing={3} style={{ marginTop: '20px' }}>
+        <Row className="mt-4">
           {years.map((year) => (
-            <Grid item xs={12} key={year}>
-              <Card onClick={() => handleYearClick(year)}>
-                <CardContent>
-                  <Typography variant="h5" component="div">
-                    {year}
-                  </Typography>
-                </CardContent>
+            <Col xs={12} md={6} lg={3} key={year} className="mb-3">
+              <Card className="shadow" onClick={() => handleYearClick(year)} style={{ cursor: 'pointer' }}>
+                <Card.Body className="text-center">
+                  <h5>{year}</h5>
+                </Card.Body>
               </Card>
-            </Grid>
+            </Col>
           ))}
-        </Grid>
+        </Row>
       </Container>
     </MiniLayout>
   );

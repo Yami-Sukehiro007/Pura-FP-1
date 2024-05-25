@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Grid, Card, CardContent, Typography, CircularProgress } from '@mui/material';
 import { getMenteesByYear } from '../api';
 import MiniLayout from './MiniLayout';
 import { useMentee } from '../MenteeContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const MenteesList = () => {
   const { year } = useParams();
@@ -30,33 +30,37 @@ const MenteesList = () => {
   const handleMenteeClick = (menteeId) => {
     setMenteeId(menteeId);
     navigate(`/menteedashboard`);
-    };
+  };
 
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <MiniLayout>
+        <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </MiniLayout>
+    );
   }
 
   return (
     <MiniLayout>
-      <Container>
-        <Grid container spacing={2}>
+      <div className="container">
+        <div className="row">
           {mentees.map((mentee) => (
-            <Grid item xs={12} sm={6} md={3} key={mentee._id}>
-              <Card style={{minHeight:'450px',maxHeight:'450px'}}onClick={() => handleMenteeClick(mentee._id)}>
-                <CardContent>
-                  <img src={mentee.photoLink} alt={`${mentee.name}'s profile`} style={{ width: '100%', height: 'auto' }} />
-                  <Typography variant="h6" component="div">
-                    {mentee.name}
-                  </Typography>
-                  <Typography color="textSecondary">
-                    {mentee.registrationNumber}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+            <div className="col-12 col-sm-6 col-md-3 mb-4" key={mentee._id}>
+              <div className="card" style={{ minHeight: '450px', maxHeight: '450px' }} onClick={() => handleMenteeClick(mentee._id)}>
+                <img src={mentee.photoLink} alt={`${mentee.name}'s profile`} className="card-img-top" />
+                <div className="card-body">
+                  <h5 className="card-title">{mentee.name}</h5>
+                  <p className="card-text text-muted">{mentee.registrationNumber}</p>
+                </div>
+              </div>
+            </div>
           ))}
-        </Grid>
-      </Container>
+        </div>
+      </div>
     </MiniLayout>
   );
 };

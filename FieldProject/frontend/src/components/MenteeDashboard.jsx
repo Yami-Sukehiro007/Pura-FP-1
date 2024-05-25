@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Card, CardContent, Typography, CircularProgress, Avatar, Box, Divider } from '@mui/material';
+import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
 import { getMenteeById } from '../api';
 import { useMentee } from '../MenteeContext';
 import Layout from './Layout';
 
 const MenteeDashboard = () => {
-  const { menteeId } = useMentee();
+  const { menteeId } = useMentee(); 
   const [mentee, setMentee] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -27,118 +27,70 @@ const MenteeDashboard = () => {
   }, [menteeId]);
 
   if (loading) {
-    return <CircularProgress />;
+    return <Spinner animation="border" />;
   }
 
   if (!mentee) {
-    return <Typography variant="h6">Mentee not found</Typography>;
+    return <h6>Mentee not found</h6>;
   }
 
   return (
     <Layout>
-      <Container>
-        <Card sx={{ boxShadow: 3, mb: 3 }}>
-          <CardContent>
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Box>
-                <Typography variant="h4" component="div" gutterBottom>
-                  {mentee.name}
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-                  Registration Number: {mentee.registrationNumber}
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-                  Phone : {mentee.phone}
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-                  Email: {mentee.email}
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-                  Year: {mentee.year}
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-                  Role: {mentee.role}
-                </Typography>
-              </Box>
-              <Avatar src={mentee.photoLink} alt={`${mentee.name}'s profile`} sx={{ width: 150, height: 150, boxShadow: 2 }} />
-            </Box>
-            <Divider sx={{ my: 2 }} />
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <Card sx={{ boxShadow: 3, mb: 3 }}>
-                  <CardContent>
-                    <Typography variant="h6" component="div" gutterBottom>
-                      Personal Information
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Parents' Names: {mentee.parentsNames}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Parents' Occupation: {mentee.parentsOccupation}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Blood Group: {mentee.bloodGroup}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Nationality: {mentee.nationality}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Religion: {mentee.religion}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Address: {mentee.address}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Admission Type: {mentee.admissionType}
-                    </Typography>
-                  </CardContent>
+      <Container className="my-3">
+        <Card className="shadow mb-3">
+          <Card.Body>
+            <Row className="align-items-center">
+              <Col md={8}>
+                <h4>{mentee.name}</h4>
+                <p className="text-muted">Registration Number: {mentee.registrationNumber}</p>
+                <p className="text-muted">Phone: {mentee.phone}</p>
+                <p className="text-muted">Email: {mentee.email}</p>
+                <p className="text-muted">Year: {mentee.year}</p>
+                <p className="text-muted">Role: {mentee.role}</p>
+              </Col>
+              <Col md={4} className="text-center">
+                <img
+                  src={mentee.photoLink}
+                  alt={`${mentee.name}'s profile`}
+                  className="img-fluid rounded-circle shadow"
+                  style={{ width: '150px', height: '150px' }}
+                />
+              </Col>
+            </Row>
+            <hr />
+            <Row>
+              <Col md={6}>
+                <Card className="shadow mb-3">
+                  <Card.Body>
+                    <h6>Personal Information</h6>
+                    <p className="text-muted">Parents' Names: {mentee.parentsNames}</p>
+                    <p className="text-muted">Parents' Occupation: {mentee.parentsOccupation}</p>
+                    <p className="text-muted">Blood Group: {mentee.bloodGroup}</p>
+                    <p className="text-muted">Nationality: {mentee.nationality}</p>
+                    <p className="text-muted">Religion: {mentee.religion}</p>
+                    <p className="text-muted">Address: {mentee.address}</p>
+                    <p className="text-muted">Admission Type: {mentee.admissionType}</p>
+                  </Card.Body>
                 </Card>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Card sx={{ boxShadow: 3, mb: 3 }}>
-                  <CardContent>
-                    <Typography variant="h6" component="div" gutterBottom>
-                      Academic Information
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Classes Attended: {mentee.classesAttended}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Total Classes: {mentee.totalClasses}
-                    </Typography>
-                    <Divider sx={{ my: 2 }} />
-                    <Typography variant="h6" component="div" gutterBottom>
-                      GPA Details
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Semester 1 GPA: {mentee.sem1Gpa}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Semester 2 GPA: {mentee.sem2Gpa}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Semester 3 GPA: {mentee.sem3Gpa}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Semester 4 GPA: {mentee.sem4Gpa}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Semester 5 GPA: {mentee.sem5Gpa}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Semester 6 GPA: {mentee.sem6Gpa}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Semester 7 GPA: {mentee.sem7Gpa}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" gutterBottom>
-                      Semester 8 GPA: {mentee.sem8Gpa}
-                    </Typography>
-                  </CardContent>
+              </Col>
+              <Col md={6}>
+                <Card className="shadow mb-3">
+                  <Card.Body>
+                    <h6>Academic Information</h6>
+                    <p className="text-muted">Classes Attended: {mentee.classesAttended}</p>
+                    <p className="text-muted">Total Classes: {mentee.totalClasses}</p>
+                    <hr />
+                    <h6>GPA Details</h6>
+                    {Array.from({ length: 8 }).map((_, index) => (
+                      <p className="text-muted" key={index}>
+                        Semester {index + 1} GPA: {mentee[`sem${index + 1}Gpa`]}
+                      </p>
+                    ))}
+                  </Card.Body>
                 </Card>
-              </Grid>
-            </Grid>
-          </CardContent>
+              </Col>
+            </Row>
+          </Card.Body>
         </Card>
       </Container>
     </Layout>

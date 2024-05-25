@@ -1,77 +1,47 @@
 import React from 'react';
-import {
-  Box,
-  CssBaseline,
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-} from '@mui/material';
 import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
-import {
-  ExitToApp,
-} from '@mui/icons-material';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 const MiniLayout = ({ children }) => {
   const { userRole, name, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Implement logic to clear user authentication (e.g., remove cookies or clear state)
     logout();
-    // Redirect to the registration page after logout
     navigate('/');
   };
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      <CssBaseline />
-
+    <div className="d-flex flex-column min-vh-100">
       {/* App Bar */}
-      <AppBar position="fixed" sx={{ backgroundColor: '#1976D2', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <Typography variant="h4" component="div" sx={{ fontFamily: 'Poppins, sans-serif', flex: 1, textAlign: 'center', color: 'white' }}>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div className="container-fluid">
+          <span className="navbar-brand mx-auto h1" style={{ fontFamily: 'Poppins, sans-serif' }}>
             MentorConnect.vnrvjiet
-          </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="h6" component="div" sx={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.5rem', color: 'white' }}>
-              👋🏻{name}
-              <Typography variant="body2" component="span" sx={{ marginLeft: 1, fontSize: '1rem', color: 'white' }}>
-                ({userRole})
-              </Typography>
-            </Typography>
-            <IconButton color="inherit" onClick={handleLogout} sx={{ ml: 2 }}>
-              <ExitToApp />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
+          </span>
+          <div className="d-flex align-items-center">
+            <span className="navbar-text me-3" style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.5rem', color: 'white' }}>
+              👋🏻 {name} ({userRole})
+            </span>
+            <button className="btn btn-outline-light" onClick={handleLogout}>
+              <i className="bi bi-box-arrow-right"></i> Logout
+            </button>
+          </div>
+        </div>
+      </nav>
 
       {/* Main Content */}
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          overflow: 'auto', // Enable scrolling
-          height: 'calc(100vh - 64px)', // Adjust the height as needed
-        }}
-      >
-        <Toolbar />
+      <main className="flex-grow-1 p-3" style={{ marginTop: '64px', overflow: 'auto', height: 'calc(100vh - 64px)' }}>
         {children}
-      </Box>
+      </main>
 
       {/* Footer */}
-      <Typography
-        variant="body2"
-        color="textSecondary"
-        align="center"
-        sx={{ backgroundColor: '#1976D2', py: 2, color: 'white', mt: 'auto', position: 'fixed', bottom: 0, width: '100%' }}
-      >
+      <footer className="bg-primary text-white text-center py-2" style={{ position: 'fixed', bottom: 0, width: '100%' }}>
         @MentorConnect.vnrvjiet.
-      </Typography>
-    </Box>
+      </footer>
+    </div>
   );
 };
 
